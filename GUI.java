@@ -2,16 +2,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+
 
 public class GUI implements ActionListener {
-
+    private static DateTimeFormatter dtf;
     private static JTextField user_text;
     private static JPasswordField pass_text;
     private static JLabel success_text;
+    private static JLabel last_attempt;
 
     public static void main(String[] args){
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
+        frame.setResizable(false);
+
+        ImageIcon img = new ImageIcon("C:\\Users\\Edwin\\IdeaProjects\\GUI\\src\\img.png");
+        frame.setIconImage(img.getImage());
 
         JButton button = new JButton("LOGIN");
         button.setBounds(10, 90, 80, 30);
@@ -19,6 +27,7 @@ public class GUI implements ActionListener {
 
         JLabel label_user = new JLabel("USER:");
         JLabel label_pass = new JLabel("PASS:");
+
         label_user.setBounds(10, 20, 80, 25);
         label_pass.setBounds(10, 50, 80, 25);
 
@@ -41,8 +50,13 @@ public class GUI implements ActionListener {
         panel.add(pass_text);
 
         success_text = new JLabel("");
+        last_attempt = new JLabel("");
+        last_attempt.setForeground(Color.decode("#73706f"));
         success_text.setBounds(10, 130, 400, 20);
+        last_attempt.setBounds(10, 160, 400, 20);
         panel.add(success_text);
+        panel.add(last_attempt);
+
 
 
 
@@ -57,6 +71,10 @@ public class GUI implements ActionListener {
         String user_default = "Mark Madhukar";
         String pass_inp = String.valueOf(pass_text.getPassword());
         String pass_default = "password";
+        dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        last_attempt.setText("Last Attempt:  "  + dtf.format(now));
+
 
         if (user_inp.equals(user_default) && pass_inp.equals(pass_default)){
             success_text.setText("| ACCESS GRANTED |");
@@ -67,6 +85,8 @@ public class GUI implements ActionListener {
             System.out.println("| ACCESS DENIED |");
             success_text.setForeground(Color.decode("#eb4034"));
         }
+
+
 
     }
 }
