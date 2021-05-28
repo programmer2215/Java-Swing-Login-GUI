@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+import java.io.*;
 
 
 public class GUI implements ActionListener {
@@ -12,13 +13,15 @@ public class GUI implements ActionListener {
     private static JPasswordField pass_text;
     private static JLabel success_text;
     private static JLabel last_attempt;
+    private static String last_login;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
+
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         frame.setResizable(false);
 
-        ImageIcon img = new ImageIcon("C:\\Users\\Edwin\\IdeaProjects\\GUI\\src\\img.png");
+        ImageIcon img = new ImageIcon("img.png");
         frame.setIconImage(img.getImage());
 
         JButton button = new JButton("LOGIN");
@@ -50,7 +53,16 @@ public class GUI implements ActionListener {
         panel.add(pass_text);
 
         success_text = new JLabel("");
-        last_attempt = new JLabel("");
+        try  {
+            BufferedReader br = new BufferedReader(
+                    new FileReader("log.txt")
+            );
+            last_login = br.readLine();
+
+        } catch (IOException ioe) {
+            return;
+        }
+        last_attempt = new JLabel("Last Login:  " + last_login);
         last_attempt.setForeground(Color.decode("#73706f"));
         success_text.setBounds(10, 130, 400, 20);
         last_attempt.setBounds(10, 160, 400, 20);
@@ -73,13 +85,25 @@ public class GUI implements ActionListener {
         String pass_default = "password";
         dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
-        last_attempt.setText("Last Attempt:  "  + dtf.format(now));
+
 
 
         if (user_inp.equals(user_default) && pass_inp.equals(pass_default)){
             success_text.setText("| ACCESS GRANTED |");
             System.out.println("| ACCESS GRANTED |");
             success_text.setForeground(Color.decode("#32a852"));
+
+            last_attempt.setText("Last Login:  "  + dtf.format(now));
+
+            try {
+                BufferedWriter bw = new BufferedWriter(
+                        new FileWriter("log.txt")
+                );
+                bw.write( dtf.format(now));
+                bw.close();
+            } catch (IOException ioe) {
+                ;
+            }
         }else {
             success_text.setText("| ACCESS DENIED |");
             System.out.println("| ACCESS DENIED |");
