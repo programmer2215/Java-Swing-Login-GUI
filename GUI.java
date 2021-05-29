@@ -8,7 +8,6 @@ import java.io.*;
 
 
 public class GUI implements ActionListener {
-    private static DateTimeFormatter dtf;
     private static JTextField user_text;
     private static JPasswordField pass_text;
     private static JLabel success_text;
@@ -55,12 +54,12 @@ public class GUI implements ActionListener {
         success_text = new JLabel("");
         try  {
             BufferedReader br = new BufferedReader(
-                    new FileReader("log.txt")
+                    new FileReader("src/log.txt")
             );
             last_login = br.readLine();
 
         } catch (IOException ioe) {
-            return;
+            System.out.println("doesn't work");
         }
         last_attempt = new JLabel("Last Login:  " + last_login);
         last_attempt.setForeground(Color.decode("#73706f"));
@@ -83,7 +82,7 @@ public class GUI implements ActionListener {
         String user_default = "Mark Madhukar";
         String pass_inp = String.valueOf(pass_text.getPassword());
         String pass_default = "password";
-        dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm:ss");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
 
@@ -102,7 +101,7 @@ public class GUI implements ActionListener {
                 bw.write( dtf.format(now));
                 bw.close();
             } catch (IOException ioe) {
-                ;
+                System.out.println("doesn't work");
             }
         }else {
             success_text.setText("| ACCESS DENIED |");
