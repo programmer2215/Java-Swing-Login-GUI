@@ -20,7 +20,7 @@ public class GUI implements ActionListener {
         JPanel panel = new JPanel();
         frame.setResizable(false);
 
-        ImageIcon img = new ImageIcon("img.png");
+        ImageIcon img = new ImageIcon("src/img.png");
         frame.setIconImage(img.getImage());
 
         JButton button = new JButton("LOGIN");
